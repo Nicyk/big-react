@@ -16,17 +16,17 @@ export const createUpdate = <State>(action: Action<State>): Update<State> => {
 	};
 };
 // 创建更新队列 用于存储更新
-export const createUpdateQueue = <Action>() => {
+export const createUpdateQueue = <State>() => {
 	return {
 		shared: {
 			pending: null
 		}
-	} as UpdateQueue<Action>;
+	} as UpdateQueue<State>;
 };
 // 往updateQueue.shared.pending里面添加update
-export const enqueueUpdate = <Action>(
-	updateQueue: UpdateQueue<Action>,
-	update: Update<Action>
+export const enqueueUpdate = <State>(
+	updateQueue: UpdateQueue<State>,
+	update: Update<State>
 ) => {
 	updateQueue.shared.pending = update;
 };
@@ -36,7 +36,7 @@ export const processUpdateQueue = <State>(
 	pendingUpdate: Update<State> | null
 ): { memoizedState: State } => {
 	const result: ReturnType<typeof processUpdateQueue<State>> = {
-		memoizedState: baseState
+		memoizedState: baseState // 新计算出的state
 	};
 	if (pendingUpdate !== null) {
 		const action = pendingUpdate.action;
